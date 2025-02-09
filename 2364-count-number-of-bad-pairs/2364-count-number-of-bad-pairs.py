@@ -1,9 +1,18 @@
 class Solution:
     def countBadPairs(self, nums: List[int]) -> int:
         n = len(nums)
-        cnt = Counter()
-        result = (n-1)*n//2
-        for i,num in enumerate(nums):
-            result -= cnt[num-i]
-            cnt[num-i] += 1
-        return result
+        bad_pairs = 0
+        diff_count = {}
+        for pos in range(n):
+            diff = pos - nums[pos]
+
+            #count of previous positions with same difference
+            good_pairs_count = diff_count.get(diff,0)
+
+            #total possible pairs minus good pairs = bad pairs
+            bad_pairs += pos - good_pairs_count
+
+            #update count of positions with this difference
+            diff_count[diff] = good_pairs_count + 1
+        
+        return bad_pairs
