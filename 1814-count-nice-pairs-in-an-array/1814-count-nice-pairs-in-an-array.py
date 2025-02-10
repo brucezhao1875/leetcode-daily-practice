@@ -14,9 +14,12 @@ class Solution:
                 num = num //10
             return result
 
+        def rev3(num):
+            return int( str(num)[::-1] )
+
         n = len(nums)
         
-        diff_nums = [ (num - rev2(num)) for num in nums ]
+        diff_nums = [ (num - rev3(num)) for num in nums ]
         
         cnt = Counter()
         result = 0
