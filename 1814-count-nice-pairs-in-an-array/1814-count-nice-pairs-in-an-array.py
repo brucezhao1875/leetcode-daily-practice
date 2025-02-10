@@ -17,7 +17,6 @@ class Solution:
         def rev3(num):
             return int( str(num)[::-1] )
 
-        n = len(nums)
         
         diff_nums = [ (num - rev3(num)) for num in nums ]
         
