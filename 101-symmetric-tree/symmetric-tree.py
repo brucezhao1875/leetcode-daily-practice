@@ -15,13 +15,3 @@ class Solution:
 
         if not root : return True
         return symmtric(root.left,root.right)
-
-        def foo(node):
-            if (node.left is None and node.right is not None) or (node.left is not None and node.right is None):
-                return False
-            if node.left is None and node.right is None : 
-                return True
-            return foo(node.left) == foo(node.right)
-        
-        return foo(root)
-        
