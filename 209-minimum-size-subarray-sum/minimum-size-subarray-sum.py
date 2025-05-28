@@ -8,7 +8,7 @@ class Solution:
             sums[i] = sums[i-1] + nums[i-1]
             if right == 0 and sums[i] >= target : right = i
 
-        print('sums:',sums,',left:',left,',right:',right)
+        #print('sums:',sums,',left:',left,',right:',right)
 
         while right<n+1:
             while sums[right]-sums[left]>=target:
