@@ -24,11 +24,11 @@
 
 '''
 class Solution:
-    def countNodes(self, root: Optional[TreeNode]) -> int:
+    def countNodes2(self, root: Optional[TreeNode]) -> int:
         if not root : return 0
         return 1 + self.countNodes(root.left) + self.countNodes(root.right)
 
-    def countNodes2(self, root: Optional[TreeNode]) -> int:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
         if not root: return 0
         level = 0
         node = root.left
