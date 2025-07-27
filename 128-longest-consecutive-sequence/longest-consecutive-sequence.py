@@ -1,14 +1,18 @@
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
-        counter = collections.Counter(nums)
-        result = 0
-        #print(counter.keys())
-        keys = sorted(counter.keys())
-        for num in keys:
-            if counter[num-1] == 0:
-                seq_len = 1
-                while counter[num+1]:
-                    seq_len += 1
-                    num += 1
-                result = max(result,seq_len)
-        return result
+        if not nums : return 0
+        
+        nums.append(inf)  # 在尾巴增加一个元素，这样循环的函数中不用考虑最后一个跳变的逻辑问题
+        nums = sorted(set(nums))
+
+        max_length = 1
+        current_length = 1
+
+        for i in range(1,len(nums)):
+            if nums[i] == nums[i-1] + 1 :
+                current_length += 1
+            else:
+                max_length = max(max_length,current_length)
+                current_length = 1
+
+        return max_length
