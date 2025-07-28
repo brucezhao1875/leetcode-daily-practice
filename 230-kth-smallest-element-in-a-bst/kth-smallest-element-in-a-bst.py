@@ -17,5 +17,5 @@ class Solution:
                 traverse(node.right,array)
 
         traverse(root,array)
-        print(array)
+        #print(array)
         return array[k-1]
