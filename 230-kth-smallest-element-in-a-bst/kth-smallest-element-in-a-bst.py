@@ -13,7 +13,7 @@ class Solution:
         def traverse(node : Optional[TreeNode],result) -> List[int]:
             if node is not None :
                 traverse(node.left,array)
-                if len(array) >= k : return
+                if len(array) >= k : return   #加入这一行，O(t) beats 100%
                 array.append(node.val)
                 traverse(node.right,array)
 
