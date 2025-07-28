@@ -13,6 +13,7 @@ class Solution:
         def traverse(node : Optional[TreeNode],result) -> List[int]:
             if node is not None :
                 traverse(node.left,array)
+                if len(array) >= k : return
                 array.append(node.val)
                 traverse(node.right,array)
 
