@@ -6,26 +6,42 @@
 #         self.right = None
 
 '''
-方法一：我把标准解法统统忘掉，现在从头开始推演。我要假设节点能够方便地找到它的祖先节点，
-1、因此我需要首先给TreeNode注入一个属性：father节点。那这个怎么做：python对象的封闭性没有那么好，我直接注入。
-2、现在，我可以高效地实现一个方法：判断两个节点是否有ancestor关系： while x.father is not None and x.father!=y : x = x.father ; if x.father == y : return true
-    为什么这个方法需要用到father：因为如果是从高层节点往下找，那么意味着需要遍历所有后代节点；而采用father节点，则只需要遍历从x到root的这条路径。
-3、现在的逻辑可以是：
-    while true:
-        if r.left is ancestor of p and r.left is ancestor of q :  r = r.left
-        if r.right is ancestor of p and r.right is ancestor of q : r = r.right
-        if r.left is ancestor of p and r.right is ancestor of q : return r
-        if r.right is ancestor of p and r.left is ancestor of q : return r
+Method 1: I'm forgetting all standard solutions and deriving from scratch. I'll assume nodes can conveniently find their ancestor nodes.
 
-4、复杂度分析
-    isAncestor的复杂度：O(logn)
-    整体框架的复杂度：O(logn)
-    因此整体复杂度为：O( (logn)^2 ). 对于nodes为( 10^5 )的量级，复杂度大致为（ 10000 ），完全没有问题。
+Therefore, I need to first inject a property into TreeNode: a father node. How to do this: Python objects don't have great encapsulation, so I'll inject directly.
+Now, I can efficiently implement a method to determine if two nodes have an ancestor relationship:
+pythonwhile x.father is not None and x.father != y: 
+    x = x.father
+if x.father == y: 
+    return True
+Why this method needs to use father: because if searching downward from a high-level node, it means traversing all descendant nodes; but using the father node, we only need to traverse the path from x to root.
+The current logic can be:
+pythonwhile True:
+    if r.left is ancestor of p and r.left is ancestor of q: r = r.left
+    if r.right is ancestor of p and r.right is ancestor of q: r = r.right
+    if r.left is ancestor of p and r.right is ancestor of q: return r
+    if r.right is ancestor of p and r.left is ancestor of q: return r
 
-方法二：LCA有一个成熟的解法，是不需要注入father节点的。
+Complexity Analysis:
+
+isAncestor complexity: O(log n)
+Overall framework complexity: O(log n)
+Therefore, total complexity: O((log n)²)
+
+For nodes on the scale of 10⁵, complexity is roughly 10⁴, which is completely fine.
+
+
+Method 2：LCA has one mature solution that does not require injecting a father Node .
+
+NOTICE that this is a binary search tree, which meeans the val of node is already in order. so we can judge how to travel through the tree by comparing p.val, q.val and root.val
 
 '''
 class Solution:
+
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        return self.lowestCommonAncestor2(root,p,q)
+
+
     def updateFatherRef(self, father,node):
         if node is None : return
         node.father = father
@@ -41,7 +57,9 @@ class Solution:
             x = x.father
         return False
 
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+
+
+    def lowestCommonAncestor1(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         #第一步，先把father属性注入
         self.updateFatherRef(None,root)
         r = root
@@ -55,3 +73,21 @@ class Solution:
                 r = r.right
                 continue
         return r
+    
+    def lowestCommonAncestor2(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+
+        x = root
+        
+        while True:
+            if x.val == p.val or x.val == q.val : 
+                return x
+            if p.val < x.val and q.val < x.val :
+                x = x.left
+                continue
+            if p.val > x.val and q.val > x.val:
+                x = x.right
+                continue
+            if (p.val < x.val < q.val) or  (q.val < x.val < p.val):
+                return x
+                
+        return x
