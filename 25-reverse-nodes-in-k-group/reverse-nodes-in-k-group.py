@@ -5,32 +5,35 @@
 #         self.next = next
 class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        if head is None or k<=1 : return head
-        arr = []
-        n = head
-        while n is not None:
-            t = n
-            n = n.next
-            t.next = None 
-            arr.append(t)
-
-        arr2 = []
-        for i in range(len(arr)//k):
-            subArr = arr[i*k:(i+1)*k]
-            subArr.reverse()
-            arr2 += subArr
-        # 添加剩余的节点（不足k个的部分）
-        remaining = len(arr) % k
-        if remaining > 0:
-            arr2 += arr[-remaining:]
+        dummy = ListNode(0, head)
+        prev = dummy
         
-        if not arr2:  # 空数组检查
-            return None
-
-        # 重新连接节点
-        head = arr2[0]
-        for i in range(len(arr2) - 1):  # 注意：i 到 len(arr2)-1
-            arr2[i].next = arr2[i + 1]
-        arr2[-1].next = None  # 最后一个节点指向 None
-        
-        return head
+        while True:
+            # 检查是否还有k个节点
+            kth = prev
+            for i in range(k):
+                kth = kth.next
+                if kth is None:
+                    return dummy.next
+            
+            # kth现在指向第k个节点
+            next_group = kth.next  # 保存下一组的起始位置
+            
+            # 反转当前组的k个节点
+            # 使用标准的反转链表方法
+            prev_node = next_group
+            curr = prev.next
+            
+            # 反转k个节点
+            for i in range(k):
+                next_temp = curr.next
+                curr.next = prev_node
+                prev_node = curr
+                curr = next_temp
+            
+            # 连接反转后的组
+            # prev_node现在指向反转后的第一个节点（原来的第k个）
+            # prev.next原来指向组的第一个节点，现在应该指向反转后的第一个
+            temp = prev.next
+            prev.next = prev_node
+            prev = temp  # 更新prev为原来的第一个节点（现在是组的最后一个）
