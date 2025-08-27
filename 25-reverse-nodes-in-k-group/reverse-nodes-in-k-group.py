@@ -4,7 +4,35 @@
 #         self.val = val
 #         self.next = next
 class Solution:
+
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        arr = []
+        p = head
+        while p:
+            t = p
+            p = p.next
+            t.next = None
+            arr.append(t)
+        n = len(arr)
+        loops = n // k
+        start = 0
+        for loop in range(loops):
+            start = k*loop
+            end = k*(loop+1) - 1
+            while start < end:
+                t = arr[start]
+                arr[start] = arr[end]
+                arr[end] = t
+                start += 1
+                end -= 1
+        
+        for i in range(n-1):
+            arr[i].next = arr[i+1]
+        
+        return arr[0]
+
+    #如下方法其实才是出题者想要的想法，哈哈哈
+    def reverseKGroup2(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         dummy = ListNode(0, head)
         prev = dummy
         
