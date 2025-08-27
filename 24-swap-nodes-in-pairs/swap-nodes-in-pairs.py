@@ -19,5 +19,5 @@ class Solution:
             prev = curr
             curr = tmp
             next = tmp.next if tmp is not None else None
-        
+            
         return dummy.next
