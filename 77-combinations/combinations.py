@@ -8,6 +8,8 @@ class Solution:
                 return
             
             for i in range(start, n + 1) :
+                if n - start + 1 < k - len(path):
+                    continue
                 path.append(i)
                 backtrace(i + 1, path)
                 path.pop()
