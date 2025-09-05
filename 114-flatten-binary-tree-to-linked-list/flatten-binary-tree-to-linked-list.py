@@ -11,18 +11,28 @@ class Solution:
         """
         #将节点转为单链表，按照先序遍历的顺序。返回：head、tail，指向单链表的头、尾
         def dfs(node: TreeNode):
-            if not node: return
-            head, tail = node, node
-            if node.left is not None:
-                left_head, left_tail = dfs(node.left)
-                left_tail.right = node.right
-                node.right = left_head
-                node.left = None
-                tail = left_tail
-            if node.right is not None:
+            if not node: 
+                return
+
+            if node.left is None and node.right is None:
+                return node,node
+
+            elif node.left is None and node.right is not None:
                 right_head, right_tail = dfs(node.right)
-                tail = right_tail
                 node.right = right_head
-            return head, tail
+                return node,right_tail
+            elif node.left is not None and node.right is None:
+                left_head, left_tail = dfs(node.left)
+                node.left = None
+                node.right = left_head
+                return node,left_tail
+            else:
+                left_head, left_tail = dfs(node.left)
+                right_head, right_tail = dfs(node.right)
+                node.left = None
+                node.right = left_head
+                left_tail.left = None
+                left_tail.right = right_head
+                return node,right_tail
             
         dfs(root)
